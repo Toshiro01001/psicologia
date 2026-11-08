@@ -12,11 +12,10 @@ Endereço publicado: https://toshiro01001.github.io/psicologia/
 
 É uma página única que apresenta um consultório e deixa a pessoa fazer quatro coisas sem sair dela:
 
-1. **Respirar junto com o círculo** da abertura, que cresce e encolhe num ritmo de 12 segundos.
-2. **Escolher entre presencial e online** e ver, numa agenda simulada, os dias e horários das próximas quatro semanas.
-3. **Entender a primeira sessão** em cinco momentos, clicando em cada um.
-4. **Tirar dúvidas** nas perguntas frequentes, com uma busca que filtra enquanto digita.
-5. **Deixar um primeiro contato** num formulário que confere os campos e mostra um resumo na tela.
+1. **Escolher entre presencial e online** e ver, numa agenda simulada, os dias e horários das próximas quatro semanas.
+2. **Entender a primeira sessão** em cinco momentos, clicando em cada um.
+3. **Tirar dúvidas** nas perguntas frequentes, com uma busca que filtra enquanto digita.
+4. **Deixar um primeiro contato** num formulário que confere os campos e mostra um resumo na tela.
 
 Tudo isso funciona no celular, no tablet e no computador.
 
@@ -37,9 +36,10 @@ Tudo isso funciona no celular, no tablet e no computador.
 O estudo completo está em [`docs/identidade.md`](docs/identidade.md).
 
 - **Nome e ideia:** Clareira, o espaço aberto no meio da mata onde a luz chega. Frase: "Um lugar para pensar com calma."
-- **Paleta:** Névoa `#EEF1EC` (fundo), Pinho `#1B3029` (texto), Musgo `#4B6B5E` (apoio), Pedra `#DCE3DB` (superfícies), Noite `#14241F` (seções escuras) e Sol `#E3B23C` (destaque). O Sol aparece em um único elemento por tela: o círculo que respira, o horário escolhido, o botão de conferir.
+- **Paleta:** Névoa `#EEF1EC` (fundo), Pinho `#1B3029` (texto), Musgo `#4B6B5E` (apoio), Pedra `#DCE3DB` (superfícies), Noite `#14241F` (seções escuras) e Sol `#E3B23C` (destaque). O Sol aparece em um único elemento por tela: o botão principal da abertura, o horário escolhido, o botão de conferir.
 - **Fontes:** Fraunces (títulos, com os eixos SOFT e WONK ligados, que dão calor e um pouco de personalidade) e Albert Sans (texto). As duas são locais, em `fonts/`, licença SIL Open Font License.
-- **Por quê:** psicologia pede calma sem frieza. Verde fechado e luz amarela remetem a natureza e acolhimento sem cair no lilás-pastel, no azul de hospital ou no bege com terracota que todo mundo usa. Sem fotos de banco de imagem, sem gradientes, sem sombras: a profundidade vem das cores das superfícies.
+- **Imagem forte:** uma foto de um canto de consultório, com poltrona verde-musgo, planta e luz de abajur, em `img/hero.webp`. **A foto foi gerada por IA no Canva e é só ilustrativa**: o espaço mostrado não existe e não há pessoas nela.
+- **Por quê:** psicologia pede calma sem frieza. Verde fechado e luz amarela remetem a natureza e acolhimento sem cair no lilás-pastel, no azul de hospital ou no bege com terracota que todo mundo usa. Sem fotos de banco de imagem (a da abertura é gerada por IA), sem gradientes, sem sombras: a profundidade vem das cores das superfícies.
 
 Capturas das funções no computador:
 
@@ -64,8 +64,8 @@ O site são três arquivos principais que o navegador lê e monta: `index.html` 
 - Primeira sessão: cinco passos em um array; botões com `aria-current="step"`; painel com `aria-live`.
 - Busca das perguntas: normaliza acentos (`NFD`), filtra por `includes`, abre os `<details>` que combinam, mostra contagem em `aria-live` e aviso quando nada combina.
 - Formulário: `novalidate`, validação própria (nome com sobrenome, e-mail com padrão simples, telefone com 10 ou 11 dígitos quando preenchido, modalidade e caixa de ciência obrigatórias), erros ligados por `aria-describedby` e `aria-invalid`, resumo montado com `textContent`.
-- Acessibilidade: contraste AA em todos os pares (mínimo 4,5:1), foco visível em Sol, navegação por teclado em todos os controles, `lang="pt-BR"`, `prefers-reduced-motion` respeitado (o círculo para e a palavra fixa em "respire").
-- Arquivos de publicação: `404.html` com caminhos absolutos `/psicologia/...`, `robots.txt`, `sitemap.xml`, `google20db0e080e71c701.html`, `favicon.svg`.
+- Acessibilidade: contraste AA em todos os pares (mínimo 4,5:1), foco visível em Sol, navegação por teclado em todos os controles, `lang="pt-BR"`, `prefers-reduced-motion` respeitado (a foto da abertura aparece sem animação).
+- Arquivos de publicação: `404.html` com caminhos absolutos `/psicologia/...`, `robots.txt`, `sitemap.xml`, `google20db0e080e71c701.html`, `favicon.svg` e a foto da abertura em `img/hero.webp`.
 
 ## Como rodar no seu computador
 

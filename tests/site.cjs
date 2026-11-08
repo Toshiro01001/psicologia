@@ -3,7 +3,7 @@
      node tests/site.cjs
    O script sobe um servidor local (python3 -m http.server 8305), abre a página
    em três tamanhos de tela (1280x900, iPhone 13 e 320px), verifica erros de
-   console, rolagem horizontal, textos cortados e as quatro funções, e salva
+   console, rolagem horizontal, textos cortados as funções e a foto do hero, e salva
    capturas em tests/saida/. Com SHOTS_DIR definido, salva também as capturas
    de abertura em 1440x900 e no celular nessa pasta. */
 
@@ -127,6 +127,33 @@ async function clipDe(page, sel) {
   }, sel);
 }
 
+// Foto do hero: carregou, tem a proporção 4:3 e o texto do hero não encosta nela (legibilidade).
+async function checarHero(page, contSel) {
+  return page.evaluate((contSel) => {
+    const img = document.querySelector("img.hero-foto");
+    if (!img) return { existe: false };
+    const r = img.getBoundingClientRect();
+    const caixa = img.parentElement.getBoundingClientRect();
+    const raiz = document.querySelector(contSel) || document;
+    let sobreposto = 0;
+    for (const t of raiz.querySelectorAll("h1, p, a, dl, dt, dd")) {
+      const b = t.getBoundingClientRect();
+      if (!b.width || !b.height) continue;
+      const w = Math.min(b.right, r.right) - Math.max(b.left, r.left);
+      const h = Math.min(b.bottom, r.bottom) - Math.max(b.top, r.top);
+      if (w > 1 && h > 1) sobreposto++;
+    }
+    return {
+      existe: true,
+      carregou: img.complete && img.naturalWidth === 1440 && img.naturalHeight === 1080,
+      alt: (img.getAttribute("alt") || "").length > 20,
+      proporcao: Math.round((caixa.width / caixa.height) * 100) / 100,
+      cabe: r.left >= -1 && r.right <= document.documentElement.clientWidth + 1,
+      sobreposto
+    };
+  }, contSel);
+}
+
 (async () => {
   const servidor = await sobeServidor();
   const browser = await chromium.launch();
@@ -142,6 +169,11 @@ async function clipDe(page, sel) {
       await page.goto(URL, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
 
+      const hero = await checarHero(page, ".abre-texto");
+      confere(hero.existe && hero.carregou, "foto do hero carregou (1440x1080)");
+      confere(hero.existe && hero.alt, "foto do hero tem alt descritivo");
+      confere(hero.existe && Math.abs(hero.proporcao - 1.33) < 0.02, `contêiner do hero em 4:3 (${hero.proporcao})`);
+      confere(hero.existe && hero.cabe && hero.sobreposto === 0, `foto cabe na tela e nenhum texto do hero fica sobre ela (${hero.sobreposto} sobreposições)`);
       if (vp.nome === "iphone13") {
         await page.click(".menu-botao");
         confere(await page.locator("#menu").isVisible(), `${vp.nome}: menu abre no celular`);

@@ -177,19 +177,30 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
 .abre { padding: var(--e4) 0 var(--e5); }
 .abre-grade { display: grid; grid-template-columns: 1fr; gap: var(--e3); align-items: center; }
 @media (max-width: 899px) {
-  .abre .respira { order: -1; }
-  .abre .respira-svg { width: 190px; }
-  .abre .respira-palavra { font-size: 1.3rem; min-height: 1.8rem; }
-  .abre .respira-nota { display: none; }
+  .abre { padding-top: var(--e3); }
+  .abre .abre-foto { order: -1; } /* no celular a foto abre a página, o texto vem logo abaixo */
 }
 @media (min-width: 900px) {
   .abre { padding: var(--e6) 0; }
-  .abre-grade { grid-template-columns: 7fr 5fr; gap: var(--e5); }
+  .abre-grade { grid-template-columns: 6fr 5fr; gap: var(--e5); }
 }
 .abre-quem { color: var(--musgo); font-weight: 500; margin-bottom: var(--e3); }
 .lide { font-size: var(--t-lide); line-height: 1.5; max-width: 38em; }
 
-.respira { margin: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.abre-foto {
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--raio);
+  overflow: hidden;
+  background: #847457; /* média da foto: aparece enquanto ela carrega */
+}
+.hero-foto { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-foto { animation: foto-entra 900ms ease-out both; }
+  @keyframes foto-entra { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* Círculo que respira: hoje só aparece na página 404 */
 .respira-svg { width: min(100%, 360px); height: auto; display: block; }
 .anel { fill: none; stroke: var(--musgo); stroke-width: 1.2; opacity: 0.55; }
 .anel-2 { opacity: 0.4; }
@@ -205,12 +216,6 @@ code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-si
   50% { transform: scale(1.9); }
   100% { transform: scale(1); }
 }
-.respira-legenda { margin-top: var(--e2); }
-.respira-palavra {
-  display: block; font-family: var(--titulo); font-variation-settings: "SOFT" 100, "WONK" 1;
-  font-size: 1.6rem; color: var(--pinho); min-height: 2.2rem;
-}
-.respira-nota { display: block; color: var(--musgo); font-size: var(--t-legenda); }
 
 /* Seções */
 .secao { padding: var(--e5) 0; }

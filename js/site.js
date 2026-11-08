@@ -25,24 +25,6 @@
     });
   }
 
-  /* ---------- Círculo de respiração ---------- */
-  var palavra = $("[data-respira]");
-  if (palavra) {
-    if (reduzMovimento) {
-      palavra.textContent = "respire";
-    } else {
-      var inicio = Date.now();
-      var CICLO = 12000;
-      var atualizaPalavra = function () {
-        var t = (Date.now() - inicio) % CICLO;
-        var nova = t < 4000 ? "inspire" : t < 6000 ? "segure" : "solte";
-        if (palavra.textContent !== nova) palavra.textContent = nova;
-      };
-      atualizaPalavra();
-      setInterval(atualizaPalavra, 250);
-    }
-  }
-
   /* ---------- Modalidade + agenda simulada ---------- */
   var DIAS_SEMANA = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
   var DIAS_LONGO = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];

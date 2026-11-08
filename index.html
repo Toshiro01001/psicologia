@@ -54,18 +54,9 @@
             <a class="botao botao-linha" href="#primeira-sessao">Como é a primeira sessão</a>
           </div>
         </div>
-        <figure class="respira" aria-labelledby="respira-legenda">
-          <svg class="respira-svg" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
-            <circle class="anel anel-1" cx="200" cy="200" r="190"/>
-            <circle class="anel anel-2" cx="200" cy="200" r="150"/>
-            <circle class="anel anel-3" cx="200" cy="200" r="110"/>
-            <circle class="sol" cx="200" cy="200" r="60"/>
-          </svg>
-          <figcaption id="respira-legenda" class="respira-legenda">
-            <span class="respira-palavra" data-respira aria-live="off">inspire</span>
-            <span class="respira-nota">Se quiser, respire junto com o círculo enquanto lê.</span>
-          </figcaption>
-        </figure>
+        <div class="abre-foto">
+          <img class="hero-foto" src="img/hero.webp" width="1440" height="1080" alt="Canto de um consultório com uma poltrona verde-musgo e uma almofada clara, uma planta grande em vaso de barro, cortina de linho na janela, quadro de tons verdes na parede e um abajur dourado aceso ao lado de uma estante de madeira." fetchpriority="high">
+        </div>
       </div>
     </section>
 
@@ -313,7 +304,7 @@
       <div class="contem estreito">
         <h2 id="titulo-como">Como isto funciona</h2>
         <h3>Para quem só quer usar</h3>
-        <p>Esta página mostra um consultório de psicologia fictício. Você pode respirar com o círculo, escolher entre presencial e online, ver dias e horários, ler como é a primeira sessão, procurar uma dúvida nas perguntas e preencher um primeiro contato que mostra um resumo na tela. Nenhuma informação sai do seu aparelho.</p>
+        <p>Esta página mostra um consultório de psicologia fictício. Você pode escolher entre presencial e online, ver dias e horários, ler como é a primeira sessão, procurar uma dúvida nas perguntas e preencher um primeiro contato que mostra um resumo na tela. Nenhuma informação sai do seu aparelho.</p>
         <h3>Como funciona por dentro, em linguagem comum</h3>
         <p>O site é um conjunto de arquivos de texto (a página, o estilo e o comportamento) que o navegador lê e monta. A agenda é desenhada pelo próprio navegador a partir da data de hoje, com horários sorteados de um jeito fixo para cada dia, por isso parece viva sem precisar de servidor. O formulário confere o que você digitou (nome, e-mail, modalidade e a caixa de ciência) e, se estiver tudo certo, copia os dados para o bilhete ao lado. Quando você recarrega a página, tudo some: nada fica guardado.</p>
         <details class="tecnico">
@@ -325,9 +316,9 @@
             <li>Agenda: dias úteis gerados a partir de <code>new Date()</code>; horários por função determinística do índice do dia, então o mesmo dia mostra sempre os mesmos horários.</li>
             <li>Formulário com <code>novalidate</code> e validação própria em JavaScript; mensagens de erro ligadas aos campos por <code>aria-describedby</code>; resumo montado com <code>textContent</code>, nunca <code>innerHTML</code>.</li>
             <li>Busca das perguntas: filtro por <code>includes</code> em texto normalizado sem acentos, com contagem em <code>aria-live</code>.</li>
-            <li>Círculo de respiração: SVG inline animado com <code>@keyframes</code>; a palavra troca por <code>setInterval</code> sincronizado ao ciclo de 12 segundos; com <code>prefers-reduced-motion</code> tudo fica estático.</li>
+            <li>Foto da abertura: <code>img/hero.webp</code> (1440 x 1080, gerada por IA, ilustrativa), em contêiner 4:3 com <code>object-fit: cover</code>; com <code>prefers-reduced-motion</code> ela aparece sem animação.</li>
             <li>Sem <code>localStorage</code>, sem cookies, sem requisições de rede além dos próprios arquivos.</li>
-            <li>Testes em <code>tests/site.cjs</code> com Playwright: 1280x900, iPhone 13 e 320px; verifica console, rolagem horizontal e as quatro funções.</li>
+            <li>Testes em <code>tests/site.cjs</code> com Playwright: 1280x900, iPhone 13 e 320px; verifica console, rolagem horizontal, a foto da abertura e as funções.</li>
           </ul>
         </details>
       </div>
