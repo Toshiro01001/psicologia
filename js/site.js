@@ -11,18 +11,28 @@
   var menuBotao = $(".menu-botao");
   var menu = $("#menu");
   if (menuBotao && menu) {
+    var fechaMenu = function () {
+      menu.classList.remove("aberto");
+      menuBotao.setAttribute("aria-expanded", "false");
+      menuBotao.setAttribute("aria-label", "Abrir menu");
+    };
     menuBotao.addEventListener("click", function () {
       var aberto = menu.classList.toggle("aberto");
       menuBotao.setAttribute("aria-expanded", aberto ? "true" : "false");
-      menuBotao.textContent = aberto ? "Fechar" : "Menu";
+      menuBotao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
     });
-    $$("a", menu).forEach(function (a) {
-      a.addEventListener("click", function () {
-        menu.classList.remove("aberto");
-        menuBotao.setAttribute("aria-expanded", "false");
-        menuBotao.textContent = "Menu";
-      });
+    $$("a", menu).forEach(function (a) { a.addEventListener("click", fechaMenu); });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && menu.classList.contains("aberto")) { fechaMenu(); menuBotao.focus(); }
     });
+  }
+
+  /* ---------- Cápsula do topo: mais fosca depois de 40px de rolagem ---------- */
+  var topo = $(".topo");
+  if (topo) {
+    var marcaRolagem = function () { topo.classList.toggle("rolou", window.scrollY > 40); };
+    window.addEventListener("scroll", marcaRolagem, { passive: true });
+    marcaRolagem();
   }
 
   /* ---------- Modalidade + agenda simulada ---------- */
@@ -80,6 +90,28 @@
     var botAnt = $('[data-semana="-1"]', agenda);
     var levar = $("[data-levar]", agenda);
 
+    // Resumo como cartão de papel: dia, horário e modalidade separados por linhas finas.
+    var montaResumo = function (h) {
+      resumoTexto.textContent = "";
+      var rot = document.createElement("span");
+      rot.className = "resumo-rotulo";
+      rot.textContent = "Pré-reserva simulada";
+      var dl = document.createElement("dl");
+      dl.className = "resumo-linhas";
+      [["Dia", DIAS_LONGO[estado.dia.getDay()] + ", " + fmtCurta(estado.dia)],
+       ["Horário", "às " + h],
+       ["Modalidade", estado.modalidade === "online" ? "online" : "presencial"]].forEach(function (par) {
+        var grupo = document.createElement("div");
+        var dt = document.createElement("dt"); dt.textContent = par[0];
+        var dd = document.createElement("dd"); dd.textContent = par[1];
+        grupo.appendChild(dt); grupo.appendChild(dd); dl.appendChild(grupo);
+      });
+      var nota = document.createElement("span");
+      nota.className = "resumo-nota";
+      nota.textContent = "Nada foi reservado de verdade.";
+      resumoTexto.appendChild(rot); resumoTexto.appendChild(dl); resumoTexto.appendChild(nota);
+    };
+
     var limpaEscolha = function () {
       estado.dia = null; estado.horario = null;
       horariosEl.textContent = "";
@@ -110,7 +142,7 @@
           $$(".horario", horariosEl).forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
           b.setAttribute("aria-pressed", "true");
           estado.horario = h;
-          resumoTexto.textContent = "Pré-reserva simulada: " + DIAS_LONGO[estado.dia.getDay()] + ", " + fmtCurta(estado.dia) + ", às " + h + ", " + (estado.modalidade === "online" ? "online" : "presencial") + ". Nada foi reservado de verdade.";
+          montaResumo(h);
           resumoEl.hidden = false;
         });
         horariosEl.appendChild(b);
@@ -358,5 +390,210 @@
       bilheteConteudo.hidden = true;
       bilheteVazio.hidden = false;
     });
+  }
+  /* ---------- Movimento (TerraSprint + Vesper), tudo desligado com prefers-reduced-motion ---------- */
+  var temIO = "IntersectionObserver" in window;
+
+  // Enquanto visível: liga e desliga um laço de animação conforme a parte entra ou sai da tela.
+  var quandoVisivel = function (alvo, liga, desliga) {
+    if (!temIO) { liga(); return; } // sem IntersectionObserver: roda sempre
+    new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) { if (e.isIntersecting) liga(); else desliga(); });
+    }, { threshold: 0 }).observe(alvo);
+  };
+
+  // Canvas com nitidez em telas de alta densidade (no máximo 2x) que acompanha o tamanho da seção.
+  var preparaCanvas = function (canvas, caixa, aoMedir) {
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var mede = function () {
+      var r = caixa.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.round(r.width * dpr));
+      canvas.height = Math.max(1, Math.round(r.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (aoMedir) aoMedir(r.width, r.height);
+    };
+    mede();
+    if ("ResizeObserver" in window) new ResizeObserver(mede).observe(caixa);
+    else window.addEventListener("resize", mede);
+    return ctx;
+  };
+
+  var celular = window.matchMedia("(max-width: 767px)").matches;
+
+  if (!reduzMovimento) {
+    /* Revelação por subida: 14px, .8s, 90ms entre irmãos, ao entrar 12% na tela */
+    var rises = $$("[data-rise]");
+    if (temIO && rises.length) {
+      document.documentElement.classList.add("sobe");
+      var ioRise = new IntersectionObserver(function (entradas) {
+        var n = 0;
+        entradas.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var el = e.target;
+          el.style.transitionDelay = Math.min(n, 6) * 90 + "ms";
+          n++;
+          el.classList.add("subiu");
+          ioRise.unobserve(el);
+          setTimeout(function () { el.style.transitionDelay = ""; }, 1400);
+        });
+      }, { threshold: 0.12 });
+      rises.forEach(function (el) { ioRise.observe(el); });
+    }
+
+    /* Asterisco do "Como atendo": gira só enquanto visível */
+    var asterisco = $(".asterisco");
+    if (asterisco) {
+      quandoVisivel(asterisco, function () { asterisco.classList.add("visivel"); }, function () { asterisco.classList.remove("visivel"); });
+    }
+
+    /* Abertura: chuva fina em canvas 2D, respingando na borda da foto, com o brilho Musgo
+       que segue o ponteiro (até 13px) desenhado no mesmo canvas. O brilho vira uma imagem pronta
+       uma vez só e depois é só copiado a cada quadro: bem mais leve que um filtro de desfoque em CSS. */
+    var abre = $(".abre");
+    var chuva = $("#clareiraParticulas");
+    var ponteiroFino = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (abre && chuva && chuva.getContext) {
+      document.documentElement.classList.add("chuva-ligada"); // o brilho em CSS (fallback) sai de cena
+      var foto = $(".abre-foto", abre);
+      var titulo = $("#titulo-abre");
+      var L = 0, A = 0, vento = 0, rodando = false, quadro = 0;
+      var gotas = [], respingos = [];
+      var TOTAL = celular ? 20 : 40;
+      var brilho = document.createElement("canvas");
+      var desenhaBrilho = function () {
+        var bw = Math.round(Math.min(560, Math.max(260, L * 0.7))), bh = Math.round(bw * 0.72);
+        brilho.width = bw; brilho.height = bh;
+        var cb = brilho.getContext("2d");
+        cb.fillStyle = "rgba(75, 107, 94, 0.005)"; // Musgo: 40 elipses empilhadas somam cerca de 18% no centro
+        for (var k = 0; k < 40; k++) {
+          var f = 1 - k / 42;
+          cb.beginPath();
+          cb.ellipse(bw / 2, bh / 2, (bw / 2) * f, (bh / 2) * f, 0, 0, Math.PI * 2);
+          cb.fill();
+        }
+      };
+      var ctxC = preparaCanvas(chuva, chuva, function (l, a) { L = l; A = a; desenhaBrilho(); });
+      var novaGota = function (topo) {
+        return { x: Math.random() * (L + 80) - 40, y: topo ? -20 - Math.random() * 60 : Math.random() * A, c: 12 + Math.random() * 8, v: 2.4 + Math.random() * 1.6 };
+      };
+      for (var g = 0; g < TOTAL; g++) gotas.push(novaGota(false));
+      var alvoX = 0, alvoY = 0, bX = 0, bY = 0;
+      if (ponteiroFino) {
+        abre.addEventListener("pointermove", function (ev) {
+          var r = abre.getBoundingClientRect();
+          var nx = (ev.clientX - r.left) / r.width - 0.5, ny = (ev.clientY - r.top) / r.height - 0.5;
+          vento = nx * 1.2;
+          alvoX = nx * 26; alvoY = ny * 20;
+        });
+        abre.addEventListener("pointerleave", function () { alvoX = 0; alvoY = 0; });
+      }
+      var borda = null; // borda de cima da foto, medida uma vez por quadro
+      var chao = function (x) {
+        if (borda && x > borda.x && x < borda.x + borda.l && borda.y > 0) return borda.y;
+        return A - 2;
+      };
+      var passo = function () {
+        if (!rodando) return;
+        var ra = chuva.getBoundingClientRect();
+        if (foto) {
+          var rf = foto.getBoundingClientRect();
+          borda = { x: rf.left - ra.left, y: rf.top - ra.top, l: rf.width };
+        }
+        ctxC.clearRect(0, 0, L, A);
+        if (titulo) {
+          // desliza até o alvo em cerca de 0,7 s
+          bX += (alvoX - bX) * 0.08; bY += (alvoY - bY) * 0.08;
+          var rt = titulo.getBoundingClientRect();
+          var cx = rt.left - ra.left + Math.min(rt.width, 520) * 0.45 + bX;
+          var cy = rt.top - ra.top + rt.height * 0.5 + bY;
+          ctxC.drawImage(brilho, cx - brilho.width / 2, cy - brilho.height / 2);
+        }
+        ctxC.strokeStyle = "rgba(27, 48, 41, 0.25)";
+        ctxC.lineWidth = 1;
+        ctxC.beginPath();
+        gotas.forEach(function (d, i) {
+          var limite = chao(d.x);
+          d.y += d.v; d.x += vento;
+          if (d.y >= limite && d.y - d.v < limite) {
+            for (var k = 0; k < 3; k++) respingos.push({ x: d.x, y: limite, vx: (Math.random() - 0.5) * 1.6, vy: -0.6 - Math.random() * 1.2, vida: 14 });
+            gotas[i] = novaGota(true);
+            return;
+          }
+          if (d.y > A + 20) { gotas[i] = novaGota(true); return; }
+          ctxC.moveTo(d.x, d.y);
+          ctxC.lineTo(d.x - vento * 4, d.y - d.c);
+        });
+        ctxC.stroke();
+        ctxC.fillStyle = "rgba(27, 48, 41, 0.3)";
+        respingos = respingos.filter(function (p) {
+          p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.vida--;
+          if (p.vida <= 0) return false;
+          ctxC.fillRect(p.x, p.y, 1.5, 1.5);
+          return true;
+        });
+        quadro = requestAnimationFrame(passo);
+      };
+      var abreNaTela = false;
+      var ligaChuva = function () {
+        if (rodando || document.hidden || !abreNaTela) return;
+        rodando = true; quadro = requestAnimationFrame(passo);
+      };
+      var desligaChuva = function () { rodando = false; cancelAnimationFrame(quadro); };
+      quandoVisivel(abre, function () { abreNaTela = true; ligaChuva(); }, function () { abreNaTela = false; desligaChuva(); });
+      document.addEventListener("visibilitychange", function () { if (document.hidden) desligaChuva(); else ligaChuva(); });
+    }
+
+    /* Fechamento: folhas de clareira caindo devagar, só enquanto a seção está na tela */
+    var fechamento = $(".fechamento");
+    var folhas = $("#petalas");
+    if (fechamento && folhas && folhas.getContext) {
+      var LF = 0, AF = 0, girando = false, quadroF = 0, t = 0;
+      var CORES = ["rgba(75, 107, 94, 0.35)", "rgba(75, 107, 94, 0.55)", "rgba(27, 48, 41, 0.22)", "rgba(75, 107, 94, 0.2)"];
+      var ctxF = preparaCanvas(folhas, fechamento, function (l, a) { LF = l; AF = a; });
+      var TOTALF = celular ? 20 : 35;
+      var novaFolha = function (topo) {
+        return {
+          x: Math.random() * LF, y: topo ? -30 - Math.random() * 200 : Math.random() * AF,
+          t: 6 + Math.random() * 7, v: 0.45 + Math.random() * 0.5, fase: Math.random() * 6.28,
+          ang: Math.random() * 6.28, giro: (Math.random() - 0.5) * 0.02, cor: CORES[Math.floor(Math.random() * CORES.length)]
+        };
+      };
+      var lista = [];
+      for (var f = 0; f < TOTALF; f++) lista.push(novaFolha(false));
+      var desenhaFolha = function (o) {
+        ctxF.save();
+        ctxF.translate(o.x, o.y);
+        ctxF.rotate(o.ang);
+        ctxF.fillStyle = o.cor;
+        ctxF.beginPath();
+        ctxF.moveTo(0, -o.t);
+        ctxF.quadraticCurveTo(o.t * 0.7, 0, 0, o.t);
+        ctxF.quadraticCurveTo(-o.t * 0.7, 0, 0, -o.t);
+        ctxF.fill();
+        ctxF.restore();
+      };
+      var passoF = function () {
+        if (!girando) return;
+        t += 0.016;
+        ctxF.clearRect(0, 0, LF, AF);
+        lista.forEach(function (o, i) {
+          o.y += o.v * 0.8;
+          o.x += Math.sin(t * 1.2 + o.fase) * 0.5 + 0.12;
+          o.ang += o.giro;
+          if (o.y > AF + 20 || o.x > LF + 20) { lista[i] = novaFolha(true); return; }
+          desenhaFolha(o);
+        });
+        quadroF = requestAnimationFrame(passoF);
+      };
+      var fechaNaTela = false;
+      var ligaFolhas = function () {
+        if (girando || document.hidden || !fechaNaTela) return;
+        girando = true; quadroF = requestAnimationFrame(passoF);
+      };
+      var desligaFolhas = function () { girando = false; cancelAnimationFrame(quadroF); };
+      quandoVisivel(fechamento, function () { fechaNaTela = true; ligaFolhas(); }, function () { fechaNaTela = false; desligaFolhas(); });
+      document.addEventListener("visibilitychange", function () { if (document.hidden) desligaFolhas(); else ligaFolhas(); });
+    }
   }
 })();

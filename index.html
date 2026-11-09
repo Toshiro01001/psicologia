@@ -16,6 +16,7 @@
 <body>
   <a class="pular" href="#inicio">Ir para o conteúdo</a>
 
+  <div class="concha">
   <p class="faixa-demo">
     Demonstração da <a href="https://mileumalinhas.com.br" rel="noopener">Mil e Uma Linhas!</a> com dados fictícios. Nada aqui é real, nada é enviado.
   </p>
@@ -30,7 +31,7 @@
         </svg>
         <span>Clareira</span>
       </a>
-      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span class="menu-traco" aria-hidden="true"></span><span class="menu-traco" aria-hidden="true"></span></button>
       <nav id="menu" class="menu" aria-label="Seções do site">
         <a href="#atendimento">Como atendo</a>
         <a href="#primeira-sessao">Primeira sessão</a>
@@ -40,10 +41,13 @@
     </div>
   </header>
 
-  <main id="inicio">
+  <main>
 
     <!-- Início -->
-    <section class="abre" aria-labelledby="titulo-abre">
+    <section class="abre" id="inicio" aria-labelledby="titulo-abre">
+      <canvas id="clareiraParticulas" class="abre-chuva" aria-hidden="true"></canvas>
+      <div class="abre-fumaca" aria-hidden="true"></div>
+      <div id="bloom" class="abre-bloom" aria-hidden="true"></div>
       <div class="contem abre-grade">
         <div class="abre-texto">
           <p class="abre-quem">Helena Sodré, psicóloga clínica. Adultos, presencial em Cuiabá e online.</p>
@@ -62,14 +66,17 @@
 
     <!-- Quem sou -->
     <section class="secao" id="sobre" aria-labelledby="titulo-sobre">
-      <div class="contem grade-2">
-        <div>
-          <h2 id="titulo-sobre">Quem está do outro lado da conversa</h2>
+      <div class="contem grade-sobre">
+        <figure class="sobre-foto">
+          <img src="img/helena-retrato.webp" width="1088" height="1456" loading="lazy" decoding="async" alt="Psicóloga sentada de perfil em uma poltrona verde-musgo junto a uma janela com cortina de linho, com um caderno fechado no colo e uma planta grande ao lado.">
+        </figure>
+        <div class="sobre-texto">
+          <p class="olho" data-rise><svg class="olho-icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg><span>Quem atende</span></p>
+          <h2 id="titulo-sobre" data-rise>Quem está do outro lado da conversa</h2>
           <p>Sou Helena Sodré, psicóloga formada há doze anos, com especialização em psicoterapia de adultos. Atendo no bairro Jardim das Américas, em Cuiabá, e por vídeo para quem está em outra cidade ou prefere ficar em casa.</p>
           <p>Trabalho com ansiedade, luto, transições de vida, relacionamentos e aquele cansaço difícil de nomear. Não prometo resultado: prometo presença, sigilo e um método que a gente ajusta junto.</p>
-        </div>
         <div class="lista-dupla">
-          <div class="lista-bloco">
+          <div class="lista-bloco" data-rise>
             <h3>O que você encontra aqui</h3>
             <ul>
               <li>Sessões de 50 minutos, semanais ou quinzenais.</li>
@@ -78,7 +85,7 @@
               <li>Encaminhamento para psiquiatria ou outro serviço quando fizer sentido.</li>
             </ul>
           </div>
-          <div class="lista-bloco">
+          <div class="lista-bloco" data-rise>
             <h3>O que não faço</h3>
             <ul>
               <li>Testes de personalidade ou diagnóstico pela internet.</li>
@@ -87,15 +94,32 @@
             </ul>
           </div>
         </div>
+        </div>
       </div>
     </section>
+
+    <!-- Prova: três pílulas -->
+    <div class="prova" role="list" aria-label="Em poucas palavras">
+      <div class="contem prova-faixa">
+        <p class="prova-pilula" role="listitem"><span class="prova-valor">12 anos</span><span class="prova-rotulo">de clínica com adultos</span></p>
+        <p class="prova-pilula prova-pilula-pinho" role="listitem"><span class="prova-valor">50 minutos</span><span class="prova-rotulo">por sessão, semanal ou quinzenal</span></p>
+        <p class="prova-pilula" role="listitem"><span class="prova-valor">Presencial e online</span><span class="prova-rotulo">em Cuiabá ou por vídeo</span></p>
+      </div>
+    </div>
 
     <!-- Como atendo: modalidade + agenda -->
     <section class="secao escura" id="atendimento" aria-labelledby="titulo-atend">
       <div class="contem">
-        <div class="cabeca-secao">
-          <h2 id="titulo-atend">Como atendo</h2>
-          <p class="lide">Escolha se prefere vir ao consultório ou conversar por vídeo. Depois escolha um dia e um horário. É uma simulação: nada é reservado de verdade.</p>
+        <div class="cabeca-secao cabeca-atend">
+          <div>
+            <h2 id="titulo-atend" data-rise>Como atendo <svg class="asterisco" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 1.5v17"/><path d="M1.5 10h17"/><path d="M4 4l12 12"/><path d="M16 4L4 16"/></g></svg></h2>
+            <p class="lide" data-rise>Escolha se prefere vir ao consultório ou conversar por vídeo. Depois escolha um dia e um horário. É uma simulação: nada é reservado de verdade.</p>
+          </div>
+          <dl class="agenda-dados">
+            <div class="estat"><dt>presencial</dt><dd>R$ 180</dd></div>
+            <div class="estat"><dt>online</dt><dd>R$ 160</dd></div>
+            <div class="estat"><dt>por sessão</dt><dd>50 minutos</dd></div>
+          </dl>
         </div>
 
         <fieldset class="modalidade" data-modalidade>
@@ -103,6 +127,7 @@
           <label class="opcao">
             <input type="radio" name="modalidade" value="presencial" checked>
             <span class="opcao-caixa">
+              <span class="opcao-foto"><img src="img/sala-presencial.webp" width="1456" height="816" loading="lazy" decoding="async" alt="Sala de atendimento vazia com duas poltronas verde-musgo frente a frente, tapete de fibra natural, mesa lateral com água e lenços e cortina de linho filtrando a luz."></span>
               <span class="opcao-titulo">Presencial</span>
               <span class="opcao-desc">Consultório no Jardim das Américas, Cuiabá. Sala silenciosa, entrada independente.</span>
             </span>
@@ -110,6 +135,7 @@
           <label class="opcao">
             <input type="radio" name="modalidade" value="online">
             <span class="opcao-caixa">
+              <span class="opcao-foto"><img src="img/sala-online.webp" width="1456" height="816" loading="lazy" decoding="async" alt="Mesa de madeira junto à janela com um notebook fechado, fones de ouvido, uma xícara de chá e uma planta pequena, em luz de fim de tarde com cortina de linho."></span>
               <span class="opcao-titulo">Online</span>
               <span class="opcao-desc">Por vídeo, em plataforma segura. Você só precisa de um lugar reservado e internet estável.</span>
             </span>
@@ -131,12 +157,12 @@
             <div class="horarios" data-horarios role="group" aria-label="Horários disponíveis"></div>
           </div>
           <div class="agenda-resumo" data-resumo hidden>
-            <p class="agenda-resumo-texto" data-resumo-texto></p>
+            <div class="agenda-resumo-texto papel" data-resumo-texto></div>
             <a class="botao botao-claro" href="#contato" data-levar>Levar para o primeiro contato</a>
           </div>
         </div>
 
-        <p class="nota-escura">Valores: R$ 180 por sessão presencial e R$ 160 por sessão online, valores fictícios de demonstração. A gente conversa sobre ajustes na primeira sessão.</p>
+        <p class="nota-escura">Valores fictícios de demonstração: R$ 180 por sessão presencial e R$ 160 por sessão online. A gente conversa sobre ajustes na primeira sessão.</p>
       </div>
     </section>
 
@@ -144,17 +170,21 @@
     <section class="secao" id="primeira-sessao" aria-labelledby="titulo-primeira">
       <div class="contem grade-2 grade-2-topo">
         <div>
-          <h2 id="titulo-primeira">Como funciona a primeira sessão</h2>
-          <p class="lide">Cinco momentos, sem pegadinha. Clique em cada um para ler o que acontece.</p>
+          <p class="olho" data-rise><svg class="olho-icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg><span>Cinco momentos</span></p>
+          <h2 id="titulo-primeira" data-rise>Como funciona a primeira sessão</h2>
+          <p class="lide" data-rise>Cinco momentos, sem pegadinha. Clique em cada um para ler o que acontece.</p>
           <ol class="passos" data-passos>
-            <li><button type="button" class="passo ativo" aria-current="step" data-passo="0"><span class="passo-num" aria-hidden="true">1</span><span>Você chega, ou entra na chamada</span></button></li>
-            <li><button type="button" class="passo" data-passo="1"><span class="passo-num" aria-hidden="true">2</span><span>A gente combina as regras</span></button></li>
-            <li><button type="button" class="passo" data-passo="2"><span class="passo-num" aria-hidden="true">3</span><span>Você conta o que trouxe você aqui</span></button></li>
-            <li><button type="button" class="passo" data-passo="3"><span class="passo-num" aria-hidden="true">4</span><span>Eu faço perguntas, sem pressa</span></button></li>
-            <li><button type="button" class="passo" data-passo="4"><span class="passo-num" aria-hidden="true">5</span><span>Decidimos juntos como seguir</span></button></li>
+            <li data-rise><button type="button" class="passo ativo" aria-current="step" data-passo="0"><span class="passo-num" aria-hidden="true">1</span><span>Você chega, ou entra na chamada</span></button></li>
+            <li data-rise><button type="button" class="passo" data-passo="1"><span class="passo-num" aria-hidden="true">2</span><span>A gente combina as regras</span></button></li>
+            <li data-rise><button type="button" class="passo" data-passo="2"><span class="passo-num" aria-hidden="true">3</span><span>Você conta o que trouxe você aqui</span></button></li>
+            <li data-rise><button type="button" class="passo" data-passo="3"><span class="passo-num" aria-hidden="true">4</span><span>Eu faço perguntas, sem pressa</span></button></li>
+            <li data-rise><button type="button" class="passo" data-passo="4"><span class="passo-num" aria-hidden="true">5</span><span>Decidimos juntos como seguir</span></button></li>
           </ol>
         </div>
         <div class="passo-painel" data-passo-painel aria-live="polite">
+          <figure class="passo-foto">
+            <img src="img/primeira-sessao-espera.webp" width="1456" height="1088" loading="lazy" decoding="async" alt="Sala de espera pequena e acolhedora com um banco de madeira, almofada de linho, mesa lateral com copo de água e lenços, e uma porta entreaberta com luz ao fundo.">
+          </figure>
           <p class="passo-etiqueta" data-passo-etiqueta>Momento 1 de 5</p>
           <h3 data-passo-titulo>Você chega, ou entra na chamada</h3>
           <p data-passo-texto>Chegue uns minutos antes. No consultório, a sala de espera é só sua naquele horário; online, eu envio o link no dia. Não precisa preparar nada nem trazer documento. Água e lenço ficam na mesa.</p>
@@ -168,86 +198,96 @@
 
     <!-- Perguntas frequentes -->
     <section class="secao pedra" id="perguntas" aria-labelledby="titulo-faq">
-      <div class="contem">
+      <div class="contem faq-grade">
         <div class="cabeca-secao">
-          <h2 id="titulo-faq">Perguntas que costumam aparecer</h2>
-          <p class="lide">Digite uma palavra para filtrar, ou leia tudo.</p>
+          <p class="olho" data-rise><svg class="olho-icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg><span>Perguntas</span></p>
+          <h2 id="titulo-faq" data-rise>Perguntas que costumam aparecer</h2>
+          <p class="lide" data-rise>Digite uma palavra para filtrar, ou leia tudo.</p>
         </div>
+        <figure class="faq-foto">
+          <img src="img/perguntas-clareira.webp" width="1152" height="1440" loading="lazy" decoding="async" alt="Clareira em mata de cerrado fechada, com a luz do fim da tarde entrando por uma abertura entre as copas e iluminando o chão de folhas.">
+        </figure>
+        <div class="faq-corpo">
         <div class="busca">
           <label for="busca-faq" class="visualmente-oculto">Buscar nas perguntas</label>
           <input id="busca-faq" type="search" placeholder="Ex.: sigilo, valor, online, falta" autocomplete="off" data-busca>
           <p class="busca-conta" data-busca-conta aria-live="polite">10 perguntas</p>
         </div>
         <div class="faq" data-faq>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Preciso de encaminhamento médico para começar?</summary>
             <p>Não. Você pode me procurar diretamente. Se em algum momento eu perceber que um acompanhamento psiquiátrico ajudaria, converso com você e indico um profissional de confiança.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>O que você conversa comigo fica em sigilo?</summary>
             <p>Sim. O sigilo é obrigação ética e legal do psicólogo. As exceções são raras e previstas em lei, como risco grave para você ou para outra pessoa, e mesmo nesses casos eu converso com você antes de qualquer passo.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Terapia online funciona tão bem quanto presencial?</summary>
             <p>Para a maior parte das pessoas, sim. O que faz diferença é a regularidade e o vínculo, não o lugar. Online pede um ambiente reservado e internet estável. Se eu perceber que o formato não está ajudando, a gente conversa sobre mudar.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Quanto tempo dura cada sessão e com que frequência?</summary>
             <p>Cada sessão dura 50 minutos. Começamos com encontros semanais, que é o ritmo que costuma dar mais continuidade. Depois podemos ajustar para quinzenal, dependendo do que fizer sentido para você.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Quanto custa e como pago?</summary>
             <p>Nesta demonstração, R$ 180 a sessão presencial e R$ 160 a online, valores fictícios. O pagamento seria por Pix ou transferência, até o dia da sessão. Emito recibo para reembolso de plano de saúde quando você pedir.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>E se eu precisar faltar ou remarcar?</summary>
             <p>Avisando até 24 horas antes, a gente remarca sem custo. Faltas sem aviso são cobradas, porque o horário fica reservado para você. Imprevistos acontecem, e a regra existe para proteger o compromisso dos dois lados.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Você atende adolescentes ou crianças?</summary>
             <p>Não. Meu trabalho é com adultos a partir de 18 anos. Se você procura atendimento para um filho ou filha, posso indicar colegas que trabalham com essa faixa.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Você faz diagnóstico ou laudo?</summary>
             <p>Não realizo avaliação psicológica para laudos, perícias ou concursos. Também não faço diagnóstico pela internet. O meu trabalho é a psicoterapia, e se uma avaliação formal for necessária eu indico quem faz.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Em quanto tempo vou me sentir melhor?</summary>
             <p>Não dá para prometer prazo, e desconfie de quem promete. Algumas pessoas sentem alívio nas primeiras semanas só por ter um espaço para falar; outras precisam de mais tempo. O que eu garanto é revisar com você, de tempos em tempos, se o processo está fazendo sentido.</p>
           </details>
-          <details class="faq-item" data-faq-item>
+          <details class="faq-item" data-faq-item data-rise>
             <summary>Estou em crise agora. O que faço?</summary>
             <p>Este site não é um serviço de emergência. Se você está em risco ou pensando em se machucar, ligue para o CVV no 188 (gratuito, 24 horas), para o SAMU no 192, ou vá à UPA ou ao CAPS mais próximo. Depois, se quiser, me procure.</p>
           </details>
         </div>
         <p class="faq-vazio" data-faq-vazio hidden>Nenhuma pergunta com essa palavra. Tente outra ou escreva sua dúvida no formulário de contato.</p>
+        </div>
       </div>
     </section>
 
+    <!-- Fechamento: contato e emergência, com as folhas caindo atrás -->
+    <div class="fechamento">
+    <canvas id="petalas" class="fechamento-folhas" aria-hidden="true"></canvas>
     <!-- Primeiro contato -->
     <section class="secao" id="contato" aria-labelledby="titulo-contato">
       <div class="contem grade-2 grade-2-topo">
         <div>
-          <h2 id="titulo-contato">Primeiro contato</h2>
-          <p class="lide">Deixe seu nome e como prefere ser chamada ou chamado de volta. Nesta demonstração o formulário confere os campos e mostra um resumo na tela. Nada é enviado nem guardado.</p>
+          <p class="olho" data-rise><svg class="olho-icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg><span>Primeiro contato</span></p>
+          <h2 id="titulo-contato" data-rise>Primeiro contato</h2>
+          <p class="lide" data-rise>Deixe seu nome e como prefere ser chamada ou chamado de volta. Nesta demonstração o formulário confere os campos e mostra um resumo na tela. Nada é enviado nem guardado.</p>
           <form class="formulario" data-form novalidate>
-            <div class="campo">
+            <div class="campo" data-rise>
               <label for="f-nome">Nome</label>
               <input id="f-nome" name="nome" type="text" autocomplete="name" required aria-describedby="e-nome">
               <p class="erro" id="e-nome" aria-live="polite"></p>
             </div>
-            <div class="campo">
+            <div class="campo" data-rise>
               <label for="f-email">E-mail</label>
               <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
               <p class="erro" id="e-email" aria-live="polite"></p>
             </div>
-            <div class="campo">
+            <div class="campo" data-rise>
               <label for="f-fone">Telefone com DDD <span class="opcional">(opcional)</span></label>
               <input id="f-fone" name="fone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(65) 90000-0000" aria-describedby="e-fone">
               <p class="erro" id="e-fone" aria-live="polite"></p>
             </div>
             <div class="campo-linha">
-              <div class="campo">
+              <div class="campo" data-rise>
                 <label for="f-modalidade">Modalidade</label>
                 <select id="f-modalidade" name="modalidade" required aria-describedby="e-modalidade">
                   <option value="">Escolha</option>
@@ -256,19 +296,19 @@
                 </select>
                 <p class="erro" id="e-modalidade" aria-live="polite"></p>
               </div>
-              <div class="campo">
+              <div class="campo" data-rise>
                 <label for="f-horario">Horário preferido <span class="opcional">(opcional)</span></label>
                 <input id="f-horario" name="horario" type="text" placeholder="Ex.: terça às 14h" aria-describedby="e-horario">
                 <p class="erro" id="e-horario" aria-live="polite"></p>
               </div>
             </div>
-            <div class="campo">
+            <div class="campo" data-rise>
               <label for="f-msg">O que gostaria de dizer <span class="opcional">(opcional)</span></label>
               <textarea id="f-msg" name="mensagem" rows="4" maxlength="600" aria-describedby="e-msg c-msg"></textarea>
               <p class="conta" id="c-msg" data-conta>0 de 600 caracteres</p>
               <p class="erro" id="e-msg" aria-live="polite"></p>
             </div>
-            <div class="campo campo-check">
+            <div class="campo campo-check" data-rise>
               <input id="f-ciente" name="ciente" type="checkbox" required aria-describedby="e-ciente">
               <label for="f-ciente">Entendi que este contato não é atendimento de emergência e que, em crise, devo procurar o CVV (188) ou um serviço de saúde.</label>
               <p class="erro" id="e-ciente" aria-live="polite"></p>
@@ -280,7 +320,10 @@
             <p class="form-aviso" data-form-aviso aria-live="assertive"></p>
           </form>
         </div>
-        <aside class="bilhete" data-bilhete aria-live="polite" aria-label="Resumo do contato">
+        <aside class="bilhete papel" data-bilhete data-rise aria-live="polite" aria-label="Resumo do contato">
+          <figure class="bilhete-foto" data-bilhete-foto>
+            <img src="img/contato-bilhete.webp" width="1024" height="1024" loading="lazy" decoding="async" alt="Bloco de notas de papel cor de névoa com uma caneta de madeira e uma folha seca sobre mesa de madeira clara, vistos de cima em luz suave.">
+          </figure>
           <p class="bilhete-vazio" data-bilhete-vazio>O resumo do seu contato aparece aqui depois de conferir os campos.</p>
           <div class="bilhete-conteudo" data-bilhete-conteudo hidden>
             <h3>Resumo do que você preencheu</h3>
@@ -298,11 +341,13 @@
         <p>CVV, 188, gratuito, 24 horas, por telefone ou chat. SAMU, 192. UPA ou CAPS mais próximo. Pedir ajuda agora é um passo, não um fracasso.</p>
       </div>
     </aside>
+    </div>
 
     <!-- Como isto funciona -->
     <section class="secao" id="como-funciona" aria-labelledby="titulo-como">
       <div class="contem estreito">
-        <h2 id="titulo-como">Como isto funciona</h2>
+        <p class="olho" data-rise><svg class="olho-icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg><span>Por dentro do site</span></p>
+        <h2 id="titulo-como" data-rise>Como isto funciona</h2>
         <h3>Para quem só quer usar</h3>
         <p>Esta página mostra um consultório de psicologia fictício. Você pode escolher entre presencial e online, ver dias e horários, ler como é a primeira sessão, procurar uma dúvida nas perguntas e preencher um primeiro contato que mostra um resumo na tela. Nenhuma informação sai do seu aparelho.</p>
         <h3>Como funciona por dentro, em linguagem comum</h3>
@@ -316,9 +361,10 @@
             <li>Agenda: dias úteis gerados a partir de <code>new Date()</code>; horários por função determinística do índice do dia, então o mesmo dia mostra sempre os mesmos horários.</li>
             <li>Formulário com <code>novalidate</code> e validação própria em JavaScript; mensagens de erro ligadas aos campos por <code>aria-describedby</code>; resumo montado com <code>textContent</code>, nunca <code>innerHTML</code>.</li>
             <li>Busca das perguntas: filtro por <code>includes</code> em texto normalizado sem acentos, com contagem em <code>aria-live</code>.</li>
-            <li>Foto da abertura: <code>img/hero.webp</code> (1440 x 1080, gerada por IA, ilustrativa), em contêiner 4:3 com <code>object-fit: cover</code>; com <code>prefers-reduced-motion</code> ela aparece sem animação.</li>
+            <li>Fotos: sete imagens em <code>img/</code> (abertura, retrato, as duas salas, sala de espera, clareira e bilhete), geradas por IA no Canva e só ilustrativas, cada uma num contêiner com a proporção dela e <code>object-fit: cover</code>; só a da abertura carrega de imediato, as outras esperam a rolagem (<code>loading="lazy"</code>).</li>
+            <li>Movimento: chuva fina e brilho verde na abertura e folhas caindo no fechamento, desenhados em <code>canvas</code> 2D próprio, só enquanto a parte está na tela; blocos que sobem 14px ao aparecer. Com <code>prefers-reduced-motion</code> nada disso roda.</li>
             <li>Sem <code>localStorage</code>, sem cookies, sem requisições de rede além dos próprios arquivos.</li>
-            <li>Testes em <code>tests/site.cjs</code> com Playwright: 1280x900, iPhone 13 e 320px; verifica console, rolagem horizontal, a foto da abertura e as funções.</li>
+            <li>Testes em <code>tests/site.cjs</code> com Playwright: 1280x900, iPhone 13 e 320px; verifica console, rolagem horizontal, as fotos e as funções.</li>
           </ul>
         </details>
       </div>
@@ -327,16 +373,28 @@
 
   <footer class="rodape">
     <div class="contem rodape-grade">
-      <div>
-        <p class="rodape-marca">Clareira Psicologia</p>
+      <div class="rodape-col">
+        <p class="rodape-titulo">Clareira Psicologia</p>
         <p>Helena Sodré, CRP 18/00000 (número fictício)<br>Rua das Seringueiras, 120, sala 4, Jardim das Américas, Cuiabá, MT (endereço fictício)<br>(65) 3000-0000 (telefone fictício)</p>
       </div>
-      <div>
-        <p>Site de demonstração feito pela <a href="https://mileumalinhas.com.br" rel="noopener">Mil e Uma Linhas!</a>, de Cuiabá. Todos os nomes, endereços, valores e horários são inventados.</p>
-        <p>Em emergência: CVV 188, SAMU 192.</p>
+      <nav class="rodape-col" aria-label="Seções do site no rodapé">
+        <p class="rodape-titulo">No site</p>
+        <ul class="rodape-links">
+          <li><a href="#sobre">Quem atende</a></li>
+          <li><a href="#atendimento">Como atendo</a></li>
+          <li><a href="#primeira-sessao">Primeira sessão</a></li>
+          <li><a href="#perguntas">Perguntas</a></li>
+          <li><a href="#contato">Primeiro contato</a></li>
+        </ul>
+      </nav>
+      <div class="rodape-col">
+        <p class="rodape-titulo">Em emergência</p>
+        <p class="rodape-emerg"><span class="ponto-sol" aria-hidden="true"></span>CVV 188, SAMU 192. UPA ou CAPS mais próximo.</p>
+        <p class="rodape-credito">Site de demonstração feito pela <a href="https://mileumalinhas.com.br" rel="noopener">Mil e Uma Linhas!</a>, de Cuiabá. Todos os nomes, endereços, valores e horários são inventados.</p>
       </div>
     </div>
   </footer>
+  </div>
 
   <script src="js/site.js" defer></script>
 </body>

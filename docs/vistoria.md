@@ -1,6 +1,6 @@
 # Vistoria de segurança: Clareira Psicologia
 
-Data: 08/11/2026. Site estático de demonstração, publicado no GitHub Pages.
+Data: 08/11/2026 (primeira vistoria e revisão da leva final de design, no mesmo dia). Site estático de demonstração, publicado no GitHub Pages.
 
 ## Resumo
 
@@ -15,7 +15,7 @@ default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;
 font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'
 ```
 
-- Sem script inline, sem `eval`, sem estilo inline em atributos. O único estilo definido por JavaScript é via CSSOM (`el.style`), que a CSP não bloqueia e que o site não usa em produção (só o teste usa, para a captura).
+- Sem script inline, sem `eval`, sem estilo inline em atributos (`style="..."`). O JavaScript só mexe em estilo pelo CSSOM (`el.style`), que a CSP permite, para o atraso de 90 ms entre os blocos que sobem ao rolar. Nenhum valor vem do visitante.
 - `connect-src 'none'` impede qualquer `fetch`, `XMLHttpRequest`, WebSocket ou beacon.
 - `form-action 'none'` garante que, mesmo se o JavaScript falhar, o formulário não envia para lugar nenhum.
 - `frame-ancestors` não entra porque é ignorada em `meta` (o GitHub Pages não permite cabeçalhos HTTP próprios).
@@ -44,6 +44,19 @@ font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-ac
 ## Dados reais e segredos
 
 - Psicóloga, CRP, endereço, telefone, valores e horários são inventados. Nenhuma chave, senha ou token em arquivo versionado. A `google20db0e080e71c701.html` é só a verificação pública do Search Console.
+
+## Leva final de design (08/11/2026)
+
+O que mudou e foi conferido nesta leva:
+
+- **CSP continua restritiva e igual**: o `meta` de `index.html` e de `404.html` não mudou. Nada de script ou estilo inline foi adicionado; os ícones novos (etiquetas das seções e asterisco) são SVG escrito no HTML, sem atributo `style` e sem script.
+- **Nenhum recurso externo**: as sete fotos estão em `img/` e saem do próprio site (`img-src 'self'`); a chuva e as folhas são desenhadas em `canvas` 2D com código próprio em `js/site.js`, sem biblioteca, sem WebGL, sem fonte nova.
+- **Sem `innerHTML` novo**: o resumo da pré-reserva agora é um cartão com dia, horário e modalidade, montado com `createElement` e `textContent`. O bilhete do contato continua igual.
+- **Sem dados pessoais**: as fotos foram geradas por IA no Canva e são ilustrativas; a mulher do retrato não é uma pessoa real e nenhuma foto tem texto, placa ou rosto identificável de alguém. Nome, CRP, endereço e valores continuam fictícios.
+- **`localStorage`**: não é usado, nem `sessionStorage`, cookies ou IndexedDB. O menu, a agenda e o formulário continuam voltando ao estado inicial quando a página recarrega.
+- **Sem rede**: `connect-src 'none'` continua valendo; os laços de animação não fazem requisição nenhuma e param quando a parte sai da tela ou a aba fica oculta.
+- **Imagens**: as fotos que estão no site são as definitivas do Canva, convertidas para WebP; nenhuma imagem é de cor lisa ou gerada por script.
+- **Testes**: `tests/site.cjs` passou em 1280x900, iPhone 13 e 320px, agora conferindo também se as sete fotos carregam com o tamanho declarado.
 
 ## Riscos residuais
 

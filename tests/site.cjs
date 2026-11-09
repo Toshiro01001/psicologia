@@ -108,6 +108,9 @@ async function testaFuncoes(page, nome, desk) {
   await page.fill("#f-fone", "65900000000");
   await page.selectOption("#f-modalidade", "presencial");
   await page.fill("#f-msg", "Gostaria de conversar sobre ansiedade no trabalho.");
+  // Os campos sobem 14px ao entrar na tela: espera a subida terminar, como faria quem está usando.
+  await page.locator("#f-ciente").scrollIntoViewIfNeeded();
+  await espera(1000);
   await page.check("#f-ciente", { force: true });
   await page.click('[data-form] button[type="submit"]');
   await espera(600);
@@ -174,6 +177,15 @@ async function checarHero(page, contSel) {
       confere(hero.existe && hero.alt, "foto do hero tem alt descritivo");
       confere(hero.existe && Math.abs(hero.proporcao - 1.33) < 0.02, `contêiner do hero em 4:3 (${hero.proporcao})`);
       confere(hero.existe && hero.cabe && hero.sobreposto === 0, `foto cabe na tela e nenhum texto do hero fica sobre ela (${hero.sobreposto} sobreposições)`);
+      // Fotos da leva final: todas carregam no tamanho real declarado em width/height.
+      const fotos = await page.evaluate(async () => {
+        const imgs = [...document.querySelectorAll("main img")];
+        for (const i of imgs) { i.loading = "eager"; }
+        await Promise.all(imgs.map((i) => (i.complete ? null : new Promise((r) => { i.onload = r; i.onerror = r; }))));
+        return imgs.map((i) => ({ src: i.getAttribute("src"), ok: i.naturalWidth === +i.getAttribute("width") && i.naturalHeight === +i.getAttribute("height") && i.alt.length > 20 }));
+      });
+      const ruins = fotos.filter((f) => !f.ok).map((f) => f.src);
+      confere(fotos.length === 7 && ruins.length === 0, `${vp.nome}: as 7 fotos carregam com o tamanho real e alt descritivo ${ruins.length ? JSON.stringify(ruins) : ""}`);
       if (vp.nome === "iphone13") {
         await page.click(".menu-botao");
         confere(await page.locator("#menu").isVisible(), `${vp.nome}: menu abre no celular`);
